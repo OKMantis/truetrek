@@ -1,5 +1,5 @@
 puts "Cleaning database..."
-Cities.destroy_all
+City.destroy_all
 
 puts "Creating cities..."
 City.create!(name: "Barcelona")
@@ -38,4 +38,4 @@ puts "Creating cities..."
 City.create!(name: "Cairo")
 puts "Created Cairo"
 
-puts "Finished! Created #{Cities.count} cities."
+puts "Finished! Created #{City.count} cities."
