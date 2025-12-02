@@ -1,0 +1,232 @@
+/* ===== Base layout ===== */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #000000 0%, #000000 35%, #000000 100%);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Helvetica Neue", Arial, sans-serif;
+  color: #0f172a;
+}
+
+.auth-phone-shell {
+  width: 100%;
+  max-width: 430px;
+  padding: 24px 16px;
+}
+
+/* white “screen” card */
+
+.auth-card {
+  background: #ffffff;
+  border-radius: 32px;
+  padding: 38px 26px 32px;
+  box-shadow: 0 22px 40px rgba(15, 23, 42, 0.18);
+}
+
+/* ===== Header: Sign Up / Log In ===== */
+
+.auth-header {
+  margin-bottom: 32px;
+}
+
+.auth-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 1.4rem;
+}
+
+.auth-title-muted {
+  color: #c4c7cf;
+  font-weight: 700;
+}
+
+.auth-title-muted a {
+  color: #c4c7cf;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.auth-title-slash {
+  color: #a5acb9;
+  font-weight: 600;
+}
+
+.auth-title-main {
+  color: #132742;           /* navy */
+  font-weight: 800;
+}
+
+.auth-subtitle {
+  margin: 6px 0 0;
+  font-size: 0.92rem;
+  color: #7a8495;
+}
+
+/* ===== Form ===== */
+
+.auth-form {
+  margin-top: 8px;
+}
+
+.auth-field-group {
+  margin-bottom: 20px;
+}
+
+/* labels */
+
+.auth-label {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 4px;
+}
+
+/* simple_form default wrapper override */
+.auth-form .input {
+  margin-bottom: 0; /* we already control with .auth-field-group */
+}
+
+/* underline style inputs */
+
+.auth-input-field {
+  width: 100% !important;
+  border: none !important;
+  border-bottom: 1px solid #d2d7e2 !important;
+  border-radius: 0 !important;
+  padding: 8px 0 6px !important;
+  font-size: 0.94rem !important;
+  background: transparent !important;
+  color: #111827 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.auth-input-field::placeholder {
+  color: #c5c9d4;
+}
+
+.auth-input-field:focus {
+  border-bottom-color: #1f3654 !important;
+}
+
+/* remember me */
+
+.auth-remember-row {
+  margin: 4px 0 18px;
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.auth-remember-wrapper {
+  margin-bottom: 0 !important;
+}
+
+/* ===== Primary button ===== */
+
+.auth-actions {
+  margin-top: 4px;
+}
+
+.auth-primary-btn {
+  width: 100%;
+  border-radius: 999px;
+  padding: 11px 0;
+  border: none;
+  background: #000000;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(17, 39, 66, 0.45);
+  transition: transform 0.12s ease-out, box-shadow 0.12s ease-out,
+    background 0.12s ease-out;
+}
+
+.auth-primary-btn:hover {
+  background: #102036;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(17, 39, 66, 0.55);
+}
+
+.auth-primary-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(17, 39, 66, 0.48);
+}
+
+/* ===== Separator & alt login ===== */
+
+.auth-separator {
+  margin: 26px 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.auth-separator-line {
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.auth-separator-text {
+  flex-shrink: 0;
+}
+
+.auth-alt-login {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.auth-google-link {
+  color: #102742;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-google-link:hover {
+  text-decoration: underline;
+}
+
+/* ===== Footer links ===== */
+
+.auth-footer-links {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 0.82rem;
+  color: #6b7280;
+}
+
+.auth-footer-links a {
+  color: #102742;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  font-weight: 500;
+}
+
+.auth-footer-links span {
+  margin: 0 6px;
+}
+
+/* ===== Small screens ===== */
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 32px 22px 28px;
+    border-radius: 26px;
+  }
+
+  .auth-title-row {
+    font-size: 1.25rem;
+  }
+}

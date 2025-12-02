@@ -1,25 +1,70 @@
-<h2>Sign up</h2>
+<div class="auth-page">
+  <div class="auth-phone-shell">
+    <div class="auth-card">
+      <header class="auth-header">
+        <div class="auth-title-row">
+          <span class="auth-title-main">Sign Up</span>
+          <span class="auth-title-slash">/</span>
+          <span class="auth-title-muted">
+            <%= link_to "Log In", new_session_path(resource_name), class: "auth-title-link" %>
+          </span>
+        </div>
+        <p class="auth-subtitle">Good to see you here for the first time!</p>
+      </header>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= f.error_notification %>
+      <%= simple_form_for(resource,
+                          as: resource_name,
+                          url: registration_path(resource_name),
+                          html: { class: "auth-form" }) do |f| %>
 
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: true,
-                autofocus: true,
-                input_html: { autocomplete: "email" }%>
-    <%= f.input :password,
-                required: true,
-                hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :password_confirmation,
-                required: true,
-                input_html: { autocomplete: "new-password" } %>
+        <%= f.error_notification %>
+
+        <div class="auth-field-group">
+          <%= f.label :email, "Email/Username", class: "auth-label" %>
+          <%= f.input :email,
+                      label: false,
+                      required: true,
+                      autofocus: true,
+                      input_html: {
+                        autocomplete: "email",
+                        class: "auth-input-field"
+                      } %>
+        </div>
+
+        <div class="auth-field-group">
+          <%= f.label :password, "Password", class: "auth-label" %>
+
+          <% if @minimum_password_length %>
+            <p class="auth-hint">
+              <%= @minimum_password_length %> characters minimum
+            </p>
+          <% end %>
+
+          <%= f.input :password,
+                      label: false,
+                      required: true,
+                      input_html: {
+                        autocomplete: "new-password",
+                        class: "auth-input-field"
+                      } %>
+        </div>
+
+        <div class="auth-field-group">
+          <%= f.label :password_confirmation, "Confirm password", class: "auth-label" %>
+          <%= f.input :password_confirmation,
+                      label: false,
+                      required: true,
+                      input_html: {
+                        autocomplete: "new-password",
+                        class: "auth-input-field"
+                      } %>
+        </div>
+
+        <div class="auth-actions">
+          <%= f.button :submit, "Sign up", class: "auth-primary-btn" %>
+        </div>
+      <% end %>
+
+    </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
