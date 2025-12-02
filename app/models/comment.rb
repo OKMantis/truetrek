@@ -4,6 +4,6 @@ class Comment < ApplicationRecord
   has_many_attached :photos
 
   validates :description, presence: true
-  validates :description, length: { minimum: 100 }
+  validates :description, length: { minimum: 20 }
   
 end
