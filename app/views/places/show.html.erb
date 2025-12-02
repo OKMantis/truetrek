@@ -1,0 +1,22 @@
+
+<div class="container" style="display:flex;flex-direction:column;">
+  <h1>Details page: <%= @place.title %></h1>
+  <div class="">
+    <strong>Wiki description: </strong><%= @place.wiki_description %>
+  </div>
+  <div class="">
+    <strong>City: </strong><%= @place.city.name %>
+  </div>
+  <div class="">
+    <strong>User: </strong><%= Comment.find_by(place_id: @place).user.email %>
+  </div>
+  <div class="">
+    <strong>Comment: </strong><%= Comment.find_by(place_id: @place).description %>
+  </div>
+  <div class="">
+    <strong>Images: </strong>
+    <% Comment.find_by(place_id: @place).photos.each do |photo| %>
+      <%= cl_image_tag photo.key, height: 300, width: 400, crop: :fill %>
+    <% end %>
+  </div>
+</div>
