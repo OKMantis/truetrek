@@ -1,5 +1,16 @@
 <div class="container">
-  <h1>Places index</h1>
+  <h1>Places in <%= @city.name %></h1>
+
+  <%= form_with url: city_places_path(@city), method: :get, local: true, class: "mb-4" do |f| %>
+    <div class="input-group">
+      <%= f.text_field :query, value: params[:query], class: "form-control", placeholder: "Search places..." %>
+      <%= f.submit "Search", class: "btn btn-primary" %>
+      <% if params[:query].present? %>
+        <%= link_to "Clear", city_places_path(@city), class: "btn btn-outline-secondary" %>
+      <% end %>
+    </div>
+  <% end %>
+
   <div class="cards">
     <% @places.each do |place| %>
       <%= link_to city_place_path(place.city, place) do %>
@@ -9,7 +20,8 @@
       <% end %>
     <% end %>
   </div>
+
+  <% if @places.empty? && params[:query].present? %>
+    <p class="text-muted">No places found for "<%= params[:query] %>"</p>
+  <% end %>
 </div>
-
-
-

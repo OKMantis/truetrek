@@ -10,7 +10,7 @@
         <%= form_with url: root_path, method: :get, local: true, class: "search-form" do %>
           <div class="search-input-wrapper">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <%= text_field_tag :query, params[:query], placeholder: "Where do you want to go?", class: "search-input" %>
+            <%= text_field_tag :query, params[:query], placeholder: "Search cities, places, comments...", class: "search-input" %>
           </div>
           <%= submit_tag "Explore", class: "search-btn" %>
         <% end %>
@@ -19,24 +19,102 @@
     <div class="hero-overlay"></div>
   </section>
 
-  <!-- Cities Section -->
-  <section class="cities-section">
-    <div class="section-header">
-      <h2 class="section-title">Popular Destinations</h2>
-      <p class="section-subtitle">Handpicked cities waiting to be explored</p>
-    </div>
+  <% if @query.present? %>
+    <!-- Search Results Section -->
+    <section class="search-results-section container py-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Search results for "<%= @query %>"</h2>
+        <%= link_to "Clear search", root_path, class: "btn btn-outline-secondary" %>
+      </div>
 
-    <div class="cities-grid">
-      <% @cities.each_with_index do |city, index| %>
-        <%= link_to city_places_path(city), class: "city-card #{'featured' if index < 2}" do %>
-          <div class="card-image" style="background-image: url('<%= city.img %>');"></div>
-          <div class="card-overlay"></div>
-          <div class="card-content">
-            <h3 class="card-title"><%= city.name %></h3>
-            <span class="card-cta">Explore <i class="fa-solid fa-arrow-right"></i></span>
+      <% if @cities.any? || @places.any? || @comments.any? %>
+        <% if @cities.any? %>
+          <div class="mb-5">
+            <h3 class="mb-3">Cities (<%= @cities.count %>)</h3>
+            <div class="cities-grid">
+              <% @cities.each do |city| %>
+                <%= link_to city_places_path(city), class: "city-card" do %>
+                  <div class="card-image" style="background-image: url('<%= city.img %>');"></div>
+                  <div class="card-overlay"></div>
+                  <div class="card-content">
+                    <h3 class="card-title"><%= city.name %></h3>
+                    <span class="card-cta">Explore <i class="fa-solid fa-arrow-right"></i></span>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
           </div>
         <% end %>
+
+        <% if @places.any? %>
+          <div class="mb-5">
+            <h3 class="mb-3">Places (<%= @places.count %>)</h3>
+            <div class="row">
+              <% @places.each do |place| %>
+                <div class="col-md-4 mb-3">
+                  <%= link_to city_place_path(place.city, place), class: "text-decoration-none" do %>
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <h5 class="card-title"><%= place.title %></h5>
+                        <p class="card-text text-muted"><small><i class="fa-solid fa-location-dot"></i> <%= place.city.name %></small></p>
+                        <p class="card-text"><%= truncate(place.wiki_description, length: 100) %></p>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <% if @comments.any? %>
+          <div class="mb-5">
+            <h3 class="mb-3">Comments (<%= @comments.count %>)</h3>
+            <div class="row">
+              <% @comments.each do |comment| %>
+                <div class="col-md-6 mb-3">
+                  <%= link_to city_place_path(comment.place.city, comment.place), class: "text-decoration-none" do %>
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <p class="card-text"><%= truncate(comment.description, length: 150) %></p>
+                        <p class="card-text text-muted">
+                          <small>
+                            <i class="fa-solid fa-user"></i> <%= comment.user.username %>
+                            on <strong><%= comment.place.title %></strong>
+                          </small>
+                        </p>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-muted">No results found for "<%= @query %>"</p>
       <% end %>
-    </div>
-  </section>
+    </section>
+  <% else %>
+    <!-- Cities Section -->
+    <section class="cities-section">
+      <div class="section-header">
+        <h2 class="section-title">Popular Destinations</h2>
+        <p class="section-subtitle">Handpicked cities waiting to be explored</p>
+      </div>
+
+      <div class="cities-grid">
+        <% @cities.each_with_index do |city, index| %>
+          <%= link_to city_places_path(city), class: "city-card #{'featured' if index < 2}" do %>
+            <div class="card-image" style="background-image: url('<%= city.img %>');"></div>
+            <div class="card-overlay"></div>
+            <div class="card-content">
+              <h3 class="card-title"><%= city.name %></h3>
+              <span class="card-cta">Explore <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
 </div>
