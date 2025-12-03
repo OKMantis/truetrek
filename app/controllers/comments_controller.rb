@@ -1,3 +1,5 @@
+require "open-uri"
+
 class CommentsController < ApplicationController
   SYSTEM_PROMPT = "You are a helpful assistant that provides concise Wikipedia summaries about places. When asked about a place, use the wikipedia tool to fetch information and return a brief 2-3 sentence summary."
 
