@@ -20,11 +20,33 @@
         <%= f.error_notification %>
 
         <div class="auth-field-group">
-          <%= f.label :email, "Email/Username", class: "auth-label" %>
-          <%= f.input :email,
+          <%= f.label :username, "Username", class: "auth-label" %>
+          <%= f.input :username,
                       label: false,
                       required: true,
                       autofocus: true,
+                      input_html: {
+                        class: "auth-input-field",
+                        placeholder: "Your display name"
+                      } %>
+        </div>
+
+        <div class="auth-field-group">
+          <%= f.label :city, "City", class: "auth-label" %>
+          <%= f.input :city,
+                      label: false,
+                      required: true,
+                      input_html: {
+                        class: "auth-input-field",
+                        placeholder: "Where are you from?"
+                      } %>
+        </div>
+
+        <div class="auth-field-group">
+          <%= f.label :email, "Email", class: "auth-label" %>
+          <%= f.input :email,
+                      label: false,
+                      required: true,
                       input_html: {
                         autocomplete: "email",
                         class: "auth-input-field"
