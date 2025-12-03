@@ -13,3 +13,69 @@
 @import "pages/login";
 
 @import url("https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css");
+@import url("https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css");
+
+// Mapbox Geocoder custom styling
+.geocoder-container {
+  .mapboxgl-ctrl-geocoder {
+    width: 100%;
+    max-width: 100%;
+    font-family: inherit;
+    box-shadow: none;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    &:focus-within {
+      border-color: #86b7fe;
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    .mapboxgl-ctrl-geocoder--input {
+      height: 48px;
+      padding: 12px 45px;
+      font-size: 1rem;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .mapboxgl-ctrl-geocoder--icon-search {
+      top: 14px;
+      left: 14px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .mapboxgl-ctrl-geocoder--button {
+      top: 10px;
+      right: 10px;
+    }
+  }
+
+  .mapboxgl-ctrl-geocoder--suggestion {
+    padding: 10px 15px;
+
+    &:hover {
+      background-color: #f8f9fa;
+    }
+  }
+
+  .mapboxgl-ctrl-geocoder--suggestion-title {
+    font-weight: 600;
+  }
+
+  .mapboxgl-ctrl-geocoder--suggestion-address {
+    color: #6c757d;
+    font-size: 0.875rem;
+  }
+}
+
+// Comment form styling
+.comment-form {
+  .form-label {
+    font-weight: 600;
+    color: #333;
+  }
+}
