@@ -15,12 +15,13 @@
       </div>
     <% end %>
 
-        <!-- HOME -->
-    <%= link_to root_path, class: "bottom-nav-item" do %>
-      <div class="bottom-nav-icon">
-        <i class="fa-solid fa-user" style="color: #000000;"></i>
-      </div>
-    <% end %>
-
+        <!-- PROFILE -->
+    <% if user_signed_in? %>
+      <%= link_to user_path(current_user), class: "bottom-nav-item" do %>
+        <div class="bottom-nav-icon">
+          <i class="fa-solid fa-user" style="color: #000000;"></i>
+        </div>
+     <% end %>
+     <% end %>
   </div>
 </nav>

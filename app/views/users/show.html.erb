@@ -1,0 +1,135 @@
+<div class="profile-page">
+  <!-- Profile Header -->
+
+  <div class="profile-header">
+    <div class="profile-header-bg"></div>
+    <div class="profile-header-content">
+      <div class="profile-avatar">
+        <% if @user.avatar.attached? %>
+          <%= cl_image_tag @user.avatar.key, width: 100, height: 100, crop: :fill, class: "avatar-image" %>
+        <% else %>
+          <div class="avatar-circle">
+            <%= @user.username&.first&.upcase || @user.email.first.upcase %>
+          </div>
+        <% end %>
+      </div>
+      <h1 class="profile-username-actions"><%= @user.username || "Traveler" %>
+        <% if @user == current_user %>
+
+          <%= link_to edit_user_registration_path, class: "profile-edit-btn" do %>
+            <i class="fa-solid fa-pen"></i>
+          <% end %>
+      <% end %> </h1>
+      <% if @user.city.present? %>
+        <p class="profile-location">
+          <i class="fa-solid fa-location-dot"></i>
+          <%= @user.city %>
+        </p>
+      <% end %>
+
+
+      <p class="profile-member-since">
+        <i class="fa-regular fa-calendar"></i>
+        Member since <%= @user.created_at.strftime("%B %Y") %>
+      </p>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="profile-stats">
+    <div class="stat-item">
+      <span class="stat-number"><%= @places_count %></span>
+      <span class="stat-label">Saved Places</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number"><%= @comments.count %></span>
+      <span class="stat-label">Reviews</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number"><%= @comments.joins(:photos_attachments).distinct.count %></span>
+      <span class="stat-label">Photos</span>
+    </div>
+  </div>
+
+
+  <!-- Travel Book Section -->
+  <% if @travel_book && @travel_book.places.any? %>
+    <div class="profile-section">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-book"></i> Travel Book</h2>
+        <% if @user == current_user %>
+          <%= link_to "View All", my_travel_book_path, class: "section-link" %>
+        <% end %>
+      </div>
+      <div class="travel-book-preview">
+        <% @travel_book.places.limit(6).each do |place| %>
+          <%= link_to city_place_path(place.city, place), class: "travel-book-item" do %>
+            <div class="place-card-mini">
+              <% if place.comments.flat_map(&:photos).any? %>
+                <%= cl_image_tag place.comments.flat_map(&:photos).first.key, height: 120, width: 120, crop: :fill, class: "place-thumb" %>
+              <% elsif place.default_img_url.present? %>
+                <%= image_tag place.default_img_url, class: "place-thumb" %>
+              <% else %>
+                <div class="place-thumb-placeholder">
+                  <i class="fa-solid fa-map-pin"></i>
+                </div>
+              <% end %>
+              <span class="place-name"><%= truncate(place.title, length: 20) %></span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Travel Book Button -->
+  <% if @user == current_user %>
+    <div class="profile-actions">
+      <%= link_to my_travel_book_path, class: "profile-travelbook-btn" do %>
+        <i class="fa-solid fa-book"></i>
+        My Travel Book
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Recent Reviews Section -->
+  <div class="profile-section">
+    <div class="section-header">
+      <h2><i class="fa-solid fa-comment"></i> Recent Reviews</h2>
+    </div>
+    <% if @comments.any? %>
+      <div class="reviews-list">
+        <% @comments.limit(5).each do |comment| %>
+          <div class="review-card">
+            <div class="review-header">
+              <%= link_to city_place_path(comment.place.city, comment.place), class: "review-place-link" do %>
+                <i class="fa-solid fa-location-dot"></i>
+                <%= comment.place.title %>
+              <% end %>
+              <span class="review-date"><%= time_ago_in_words(comment.created_at) %> ago</span>
+            </div>
+            <p class="review-text"><%= truncate(comment.description, length: 200) %></p>
+            <% if comment.photos.any? %>
+              <div class="review-photos">
+                <% comment.photos.limit(4).each do |photo| %>
+                  <%= cl_image_tag photo.key, height: 80, width: 80, crop: :fill, class: "review-photo" %>
+                <% end %>
+                <% if comment.photos.count > 4 %>
+                  <span class="more-photos">+<%= comment.photos.count - 4 %></span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <i class="fa-regular fa-comment-dots"></i>
+        <p>No reviews yet</p>
+        <% if @user == current_user %>
+          <%= link_to "Write your first review", new_comment_path, class: "empty-state-btn" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
