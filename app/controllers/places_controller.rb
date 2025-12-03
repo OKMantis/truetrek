@@ -4,6 +4,7 @@ class PlacesController < ApplicationController
   def index
     @city = City.find(params[:city_id])
     @places = policy_scope(@city.places)
+    @places = @places.search(params[:query]) if params[:query].present?
   end
 
   def show

@@ -1,11 +1,15 @@
 class CitiesController < ApplicationController
-
   def index
-    @cities = policy_scope(City)
-    if params[:query].present?
-      @cities = City.where("name ILIKE ?", "%#{params[:query]}%").order(:name)
+    @query = params[:query]
+    @cities = policy_scope(City).order(:name)
+
+    if @query.present?
+      @cities = @cities.search(@query)
+      @places = Place.search(@query).includes(:city)
+      @comments = Comment.search(@query).includes(:place, :user)
     else
-      @cities = City.order(:name)
+      @places = Place.none
+      @comments = Comment.none
     end
   end
 end
