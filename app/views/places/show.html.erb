@@ -3,10 +3,6 @@
   <section class="place-header">
     <div class="place-header-content">
       <nav class="place-breadcrumb">
-        <%= link_to root_path, class: "breadcrumb-link" do %>
-          <i class="fa-solid fa-house"></i> Home
-        <% end %>
-        <i class="fa-solid fa-chevron-right"></i>
         <%= link_to @place.city.name, city_places_path(@place.city), class: "breadcrumb-link" %>
         <i class="fa-solid fa-chevron-right"></i>
         <span><%= @place.title %></span>
@@ -96,9 +92,9 @@
           <% @place.comments.each do |comment| %>
             <div class="comment-card">
               <div class="comment-header">
-                <div class="comment-avatar">
+                <%# <div class="comment-avatar">
                   <%= comment.user.username.first.upcase %>
-                </div>
+                <%# </div> %>
                 <div class="comment-meta">
                   <span class="comment-author"><%= comment.user.username %></span>
                   <span class="comment-date"><%= time_ago_in_words(comment.created_at) %> ago</span>
