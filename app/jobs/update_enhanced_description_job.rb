@@ -5,6 +5,8 @@ class UpdateEnhancedDescriptionJob < ApplicationJob
     You are a helpful travel assistant that provides concise, engaging summaries about places.
     Create informative but brief descriptions (2-3 paragraphs max).
     Incorporate visitor experiences naturally into the description.
+    IMPORTANT: Give significantly more weight to insights from LOCAL residents, as they have
+    deeper knowledge of the place. Local insights should be prominently featured.
   PROMPT
 
   def perform(place_id)
@@ -31,34 +33,40 @@ class UpdateEnhancedDescriptionJob < ApplicationJob
     chat = RubyLLM.chat
     chat.with_instructions(ENHANCEMENT_PROMPT)
 
-    experiences = []
+    all_positive = positive_comments + positive_replies
+    local_experiences = all_positive.select(&:user_is_local?)
+    visitor_experiences = all_positive.reject(&:user_is_local?)
 
-    if positive_comments.any?
-      comment_texts = positive_comments.map do |comment|
-        "#{comment.user&.username || 'A visitor'}: '#{comment.description}'"
-      end
-      experiences << "Main reviews:\n#{comment_texts.join("\n\n")}"
+    sections = []
+
+    if local_experiences.any?
+      local_texts = local_experiences.map { |c| format_experience(c) }
+      sections << "LOCAL INSIGHTS (from residents - HIGH PRIORITY):\n#{local_texts.join("\n\n")}"
     end
 
-    if positive_replies.any?
-      reply_texts = positive_replies.map do |reply|
-        "#{reply.user&.username || 'A visitor'}: '#{reply.description}'"
-      end
-      experiences << "Additional insights from replies:\n#{reply_texts.join("\n\n")}"
+    if visitor_experiences.any?
+      visitor_texts = visitor_experiences.map { |c| format_experience(c) }
+      sections << "VISITOR EXPERIENCES:\n#{visitor_texts.join("\n\n")}"
     end
 
     prompt = <<~MSG
       Here is the base description of #{place.title}:
       #{place.original_description}
 
-      Here are verified visitor experiences (comments and replies with positive community votes):
-      #{experiences.join("\n\n")}
+      Here are verified experiences (with positive community votes):
+      #{sections.join("\n\n")}
 
-      Please create an enhanced description that incorporates these visitor experiences naturally.
+      Please create an enhanced description that incorporates these experiences naturally.
+      Prioritize and highlight insights from LOCAL residents as they have authentic knowledge.
       Keep it concise (2-3 paragraphs max).
     MSG
 
     response = chat.ask(prompt)
     place.update(enhanced_description: response.content)
+  end
+
+  def format_experience(comment)
+    prefix = comment.user_is_local? ? "[LOCAL] " : ""
+    "#{prefix}#{comment.user&.username || 'A visitor'}: '#{comment.description}'"
   end
 end

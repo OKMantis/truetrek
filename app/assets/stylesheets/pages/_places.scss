@@ -682,9 +682,43 @@
   flex-direction: column;
 }
 
+.comment-author-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .comment-author {
   font-weight: 600;
   color: #1a1a2e;
+}
+
+.local-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  background: linear-gradient(135deg, #4ecdc4, #44a08d);
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  i {
+    font-size: 0.6rem;
+  }
+
+  &.local-badge-small {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.65rem;
+
+    i {
+      font-size: 0.55rem;
+    }
+  }
 }
 
 .comment-date {

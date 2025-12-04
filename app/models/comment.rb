@@ -21,7 +21,14 @@ class Comment < ApplicationRecord
 
   def user_vote(user)
     return nil unless user
+
     votes.find_by(user: user)
+  end
+
+  def user_is_local?
+    return false unless user&.city.present?
+
+    user.city.downcase.strip == place.city.name.downcase.strip
   end
 
   pg_search_scope :search,
