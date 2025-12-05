@@ -5,7 +5,10 @@ Rails.application.routes.draw do
       get :search
     end
   end
+
   root to: "cities#index"
+
+  get "/pages/home", to: "pages#home"
 
   resources :cities, only: :index do
     resources :places, only: [:index, :show] do
