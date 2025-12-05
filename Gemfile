@@ -47,6 +47,7 @@ gem "pundit"
 gem "activestorage-cloudinary-service"
 gem "ruby_llm", "~> 1.2.0"
 gem "solid_queue"
+gem "mission_control-jobs"
 
 group :development, :test do
   gem "dotenv-rails"
