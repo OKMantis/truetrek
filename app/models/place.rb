@@ -8,7 +8,7 @@ class Place < ApplicationRecord
   validates :title, presence: true
 
   pg_search_scope :search,
-    against: [:title, :wiki_description],
+    against: [:title, :enhanced_description],
     associated_against: {
       comments: [:description]
     },
