@@ -1,5 +1,5 @@
 class PlacesController < ApplicationController
-  before_action :set_place, only: [:show]
+  before_action :set_place, only: [:show, :destroy]
 
   def index
     @city = City.find(params[:city_id])
@@ -52,6 +52,12 @@ class PlacesController < ApplicationController
       @auto_city = City.closest_to(lat, lng) if lat.present? && lng.present?
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    city = @place.city
+    @place.destroy
+    redirect_to city_places_path(city), notice: "Place was successfully deleted."
   end
 
   private
