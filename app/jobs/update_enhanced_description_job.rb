@@ -51,7 +51,7 @@ class UpdateEnhancedDescriptionJob < ApplicationJob
 
       Please create an enhanced description (3-4 paragraphs) that incorporates these experiences naturally.
       Prioritize and highlight insights from LOCAL residents as they have authentic knowledge.
-      
+
       CRITICAL REQUIREMENTS:
       1. You MUST incorporate ALL of the community experiences provided above into the final description.
       2. Each experience MUST appear as a complete sentence or clause ending with " (username)" where username is the exact lowercase username provided.
