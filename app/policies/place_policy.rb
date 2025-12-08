@@ -17,7 +17,15 @@ class PlacePolicy < ApplicationPolicy
     user&.admin?
   end
 
+  def new?
+    user.present?
+  end
+
+  def create?
+    user.present?
+  end
+
   def update?
-    user&.admin?
+    user.present?
   end
 end

@@ -15,6 +15,30 @@ class CommentsController < ApplicationController
     @comment = Comment.new
     @place = Place.new
     authorize @comment
+
+    # If place_id is provided, load that place (user selected from camera flow)
+    if params[:place_id]
+      @place = Place.find(params[:place_id])
+    elsif params[:from_camera]
+      # Get city from geolocation for place selection
+      lat = session[:captured_latitude]
+      lng = session[:captured_longitude]
+
+      if lat.present? && lng.present?
+        begin
+          results = Geocoder.search([lat, lng])
+          if results.present? && results.first
+            city_name = results.first.city || results.first.state || results.first.country
+            @auto_city = City.find_or_create_by(name: city_name) if city_name.present?
+            @city = @auto_city if @auto_city
+          end
+        rescue => e
+          Rails.logger.error "Geocoding error: #{e.message}"
+        end
+      end
+
+      @places = @city.places if @city
+    end
   end
 
   def create
@@ -36,8 +60,21 @@ class CommentsController < ApplicationController
     authorize @comment
 
     if @comment.save
+      # Attach camera photo if present (camera flow)
+      if session[:captured_blob_id].present?
+        begin
+          blob = ActiveStorage::Blob.find_signed(session[:captured_blob_id])
+          @comment.photos.attach(blob) if blob
+          session[:captured_blob_id] = nil
+          session[:captured_latitude] = nil
+          session[:captured_longitude] = nil
+        rescue => e
+          Rails.logger.error "Failed to attach camera photo to comment: #{e.message}"
+        end
+      end
+
       UpdateEnhancedDescriptionJob.perform_later(@place.id)
-      redirect_to city_place_path(@place.city, @place)
+      redirect_to city_place_path(@place.city, @place), notice: "Photo added successfully!"
     else
       render :new, status: :unprocessable_entity
     end
@@ -83,6 +120,9 @@ class CommentsController < ApplicationController
     city = @place.city&.name
     location_context = [address, city].compact_blank.join(", ")
 
+    # Get the username of the comment author
+    username = current_user&.username || "anonymous"
+
     base_subject = location_context.present? ? "#{@place.title} located around #{location_context}" : @place.title
 
     # Step 1: Generate initial summary
@@ -96,6 +136,9 @@ class CommentsController < ApplicationController
       - Also incorporate this visitor review: "#{user_review}"
       - Location context: #{location_context.presence || 'Unknown'}
 
+      IMPORTANT: When including content from the visitor review, end that sentence with " (#{username.downcase})" in parentheses.
+      Example format: "The place was peaceful and historic (username)."
+      Do NOT mention the username anywhere else in the text—only append it at the end of the sentence containing the review.
       If Wikipedia returns nothing useful, still produce a polished description using the review and location context without mentioning any tool errors.
     MSG
 
@@ -109,6 +152,9 @@ class CommentsController < ApplicationController
         Use the visitor review and the location context to craft an engaging, concise description.
         Visitor review: "#{user_review}"
         Location context: #{location_context.presence || 'Unknown'}
+        IMPORTANT: When including content from the visitor review, end that sentence with " (#{username.downcase})" in parentheses.
+        Example format: "The place was peaceful and historic (username)."
+        Do NOT mention the username anywhere else in the text—only append it at the end of the sentence containing the review.
       MSG
 
       fallback = @chat.ask(fallback_prompt)
