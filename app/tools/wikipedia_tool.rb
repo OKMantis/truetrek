@@ -8,8 +8,10 @@ class WikipediaTool < RubyLLM::Tool
     url = "https://en.wikipedia.org/api/rest_v1/page/summary/#{place_name}"
 
     response = URI.parse(url).read
-    JSON.parse(response)
+    data = JSON.parse(response)
+
+    { success: true, data: data }
   rescue => e
-    { error: e.message }
+    { success: false, reason: "wikipedia_unavailable", error: e.message }
   end
 end
