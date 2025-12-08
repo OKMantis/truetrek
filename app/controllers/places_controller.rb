@@ -22,6 +22,7 @@ class PlacesController < ApplicationController
 
   def show
     @comment = Comment.new
+    @comments = @place.comments.includes(:user, :votes).where(parent_id: nil).sort_by { |c| c.ordering_key(local_bonus: 2) }
     @markers =
     [{
       lat: @place.latitude,
