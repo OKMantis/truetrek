@@ -32,6 +32,10 @@ class PlacesController < ApplicationController
         Rails.logger.error "Geocoding error: #{e.message}"
       end
     end
+    return unless lat.present? && lng.present?
+
+    @auto_city = City.closest_to(lat, lng)
+    @place.city = @auto_city if @auto_city
   end
 
   def show
@@ -42,11 +46,14 @@ class PlacesController < ApplicationController
     @comment_photos = @place.comments.flat_map { |c| c.photos.map(&:blob) }
     @all_photos = @place_photos + @comment_photos
 
+    @comments = @place.comments.includes(:user, :votes).where(parent_id: nil).sort_by do |c|
+      c.ordering_key(local_bonus: 2)
+    end
     @markers =
-    [{
-      lat: @place.latitude,
-      lng: @place.longitude
-    }]
+      [{
+        lat: @place.latitude,
+        lng: @place.longitude
+      }]
   end
 
   def create
@@ -64,6 +71,9 @@ class PlacesController < ApplicationController
           Rails.logger.error "Failed to attach photo to place #{@place.id}: #{e.message}"
         end
       end
+    if @place.camera_blob_id.present? && (blob = ActiveStorage::Blob.find_signed(@place.camera_blob_id))
+      @place.photo.attach(blob)
+    end
 
       # clear camera session
       session[:captured_blob_id] = nil
