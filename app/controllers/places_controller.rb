@@ -1,5 +1,5 @@
 class PlacesController < ApplicationController
-  before_action :set_place, only: [:show]
+  before_action :set_place, only: [:show, :regenerate_description]
 
   def index
     @city = City.find(params[:city_id])
@@ -53,6 +53,11 @@ class PlacesController < ApplicationController
       @auto_city = City.closest_to(lat, lng) if lat.present? && lng.present?
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def regenerate_description
+    UpdateEnhancedDescriptionJob.perform_now(@place.id)
+    redirect_to city_place_path(@place.city, @place), notice: "Description has been regenerated!"
   end
 
   private

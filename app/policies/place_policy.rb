@@ -15,4 +15,8 @@ class PlacePolicy < ApplicationPolicy
   def show?
     true
   end
+
+  def regenerate_description?
+    true
+  end
 end
