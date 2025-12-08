@@ -1,5 +1,5 @@
 class PlacesController < ApplicationController
-  before_action :set_place, only: [:show, :regenerate_description]
+  before_action :set_place, only: %i[show regenerate_description]
 
   def index
     @city = City.find(params[:city_id])
