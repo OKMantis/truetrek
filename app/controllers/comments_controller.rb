@@ -72,7 +72,13 @@ class CommentsController < ApplicationController
         # Generate initial description for new place (async)
         GeneratePlaceDescriptionJob.perform_later(@place.id, user_review: user_review, username: username)
       else
-        # Update description with new comment (async)
+        # Broadcast loading state immediately, then update description with new comment (async)
+        Turbo::StreamsChannel.broadcast_replace_to(
+          "place_#{@place.id}",
+          target: "place_description",
+          partial: "places/description_loading",
+          locals: { place: @place }
+        )
         UpdateEnhancedDescriptionJob.perform_later(@place.id)
       end
 

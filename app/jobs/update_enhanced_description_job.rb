@@ -17,17 +17,24 @@ class UpdateEnhancedDescriptionJob < ApplicationJob
     regenerate_description(place, all_comments)
 
     # Broadcast the updated description via Turbo Streams
+    broadcast_description(place)
+  rescue StandardError => e
+    Rails.logger.error("UpdateEnhancedDescriptionJob failed for place #{place_id}: #{e.message}")
+    Rails.logger.error(e.backtrace.first(10).join("\n"))
+    # Still broadcast the current description (even if unchanged) to remove loading state
+    broadcast_description(place) if place
+  end
+
+  private
+
+  def broadcast_description(place)
     Turbo::StreamsChannel.broadcast_replace_to(
       "place_#{place.id}",
       target: "place_description",
       partial: "places/description",
-      locals: { place: place }
+      locals: { place: place.reload }
     )
-  rescue StandardError => e
-    Rails.logger.error("UpdateEnhancedDescriptionJob failed for place #{place_id}: #{e.message}")
   end
-
-  private
 
   def regenerate_description(place, all_comments)
     chat = RubyLLM.chat

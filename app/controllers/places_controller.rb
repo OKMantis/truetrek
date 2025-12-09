@@ -100,8 +100,16 @@ class PlacesController < ApplicationController
   end
 
   def regenerate_description
-    UpdateEnhancedDescriptionJob.perform_now(@place.id)
-    redirect_to city_place_path(@place.city, @place), notice: "Description has been regenerated!"
+    # Broadcast loading state immediately
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "place_#{@place.id}",
+      target: "place_description",
+      partial: "places/description_loading",
+      locals: { place: @place }
+    )
+    # Queue the job to regenerate asynchronously
+    UpdateEnhancedDescriptionJob.perform_later(@place.id)
+    redirect_to city_place_path(@place.city, @place), notice: "Description is being regenerated..."
   end
   
   def destroy
