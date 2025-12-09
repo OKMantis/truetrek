@@ -111,10 +111,10 @@
     <section class="place-description-section">
       <%= turbo_stream_from "place_#{@place.id}" %>
       <h2 class="section-heading">About this place</h2>
-      <% if @place.enhanced_description.present? %>
-        <%= render "places/description", place: @place %>
-      <% else %>
+      <% if flash[:description_loading] || @place.enhanced_description.blank? %>
         <%= render "places/description_loading", place: @place %>
+      <% else %>
+        <%= render "places/description", place: @place %>
       <% end %>
       
       <div class="d-flex flex-column justify-content-between align-items-start gap-3 mt-3">

@@ -72,17 +72,13 @@ class CommentsController < ApplicationController
         # Generate initial description for new place (async)
         GeneratePlaceDescriptionJob.perform_later(@place.id, user_review: user_review, username: username)
       else
-        # Broadcast loading state immediately, then update description with new comment (async)
-        Turbo::StreamsChannel.broadcast_replace_to(
-          "place_#{@place.id}",
-          target: "place_description",
-          partial: "places/description_loading",
-          locals: { place: @place }
-        )
+        # Update description with new comment (async)
         UpdateEnhancedDescriptionJob.perform_later(@place.id)
       end
 
-      redirect_to city_place_path(@place.city, @place), notice: "Photo added successfully!"
+      # Set flag to show loading skeleton on redirect
+      flash[:description_loading] = true
+      redirect_to city_place_path(@place.city, @place), notice: "Comment added successfully!"
     else
       render :new, status: :unprocessable_entity
     end
