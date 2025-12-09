@@ -9,32 +9,61 @@ export default class extends Controller {
     pop: Boolean,
     center: Array, // Optional [lng, lat] for initial center
     zoom: { type: Number, default: 9 },
+    geolocate: { type: Boolean, default: false }, // Request user's current location
   }
   connect() {
-    console.log(mapboxgl.version);
-
     mapboxgl.accessToken = this.apiKeyValue
 
     const mapOptions = {
       container: this.element,
       zoom: this.zoomValue,
-      style: "mapbox://styles/roukiasabry/cmist36hs001h01r6142a7chf",
+      style: "mapbox://styles/mapbox/navigation-night-v1",
     }
 
-    // If center is provided, use it; otherwise map will fit to markers
+    // If center is provided, use it as initial center
     if (this.hasCenterValue && this.centerValue.length === 2) {
       mapOptions.center = this.centerValue
     }
 
     this.map = new mapboxgl.Map(mapOptions);
     this.#addMarkersToMap()
+    this.map.addControl(new mapboxgl.NavigationControl());
 
-    // Only fit to markers if no center was specified
-    if (!this.hasCenterValue || this.centerValue.length !== 2) {
+    // If geolocate is enabled, try to get user's current location
+    if (this.geolocateValue) {
+      this.#requestUserLocation()
+    } else if (!this.hasCenterValue || this.centerValue.length !== 2) {
+      // Fall back to fitting markers if no center and no geolocation
       this.#fitMapToMarkers()
     }
+  }
 
-    this.map.addControl(new mapboxgl.NavigationControl());
+  #requestUserLocation() {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Success: center map on user's location
+          this.map.flyTo({
+            center: [position.coords.longitude, position.coords.latitude],
+            zoom: 10,
+            duration: 1500
+          })
+        },
+        (error) => {
+          // Error or denied: fall back to fitting all markers
+          console.log("Geolocation not available or denied:", error.message)
+          this.#fitMapToMarkers()
+        },
+        {
+          enableHighAccuracy: false,
+          timeout: 10000,
+          maximumAge: 300000 // Cache location for 5 minutes
+        }
+      )
+    } else {
+      // Browser doesn't support geolocation
+      this.#fitMapToMarkers()
+    }
   }
   #addMarkersToMap() {
     this.markersValue.forEach((marker) => {
