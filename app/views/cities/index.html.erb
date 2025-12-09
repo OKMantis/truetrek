@@ -27,16 +27,11 @@
 
   <% if @query.present? %>
     <!-- Search Results Section -->
-    <section class="search-results-section container py-5">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Search results for "<%= @query %>"</h2>
-        <%= link_to "Clear search", root_path, class: "btn btn-outline-secondary" %>
-      </div>
+    <section class="search-results-section container py-3">
 
-      <% if @cities.any? || @places.any? || @comments.any? %>
+      <% if @cities.any? %>
         <% if @cities.any? %>
           <div class="mb-5">
-            <h3 class="mb-3">Cities (<%= @cities.count %>)</h3>
             <div class="cities-grid">
               <% @cities.each do |city| %>
                 <%= link_to city_places_path(city), class: "city-card" do %>
@@ -52,51 +47,6 @@
           </div>
         <% end %>
 
-        <% if @places.any? %>
-          <div class="mb-5">
-            <h3 class="mb-3">Places (<%= @places.count %>)</h3>
-            <div class="row">
-              <% @places.each do |place| %>
-                <div class="col-md-4 mb-3">
-                  <%= link_to city_place_path(place.city, place), class: "text-decoration-none" do %>
-                    <div class="card h-100">
-                      <div class="card-body">
-                        <h5 class="card-title"><%= place.title %></h5>
-                        <p class="card-text text-muted"><small><i class="fa-solid fa-location-dot"></i> <%= place.city.name %></small></p>
-                        <p class="card-text"><%= truncate(place.enhanced_description, length: 100) %></p>
-                      </div>
-                    </div>
-                  <% end %>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-
-        <% if @comments.any? %>
-          <div class="mb-5">
-            <h3 class="mb-3">Comments (<%= @comments.count %>)</h3>
-            <div class="row">
-              <% @comments.each do |comment| %>
-                <div class="col-md-6 mb-3">
-                  <%= link_to city_place_path(comment.place.city, comment.place), class: "text-decoration-none" do %>
-                    <div class="card h-100">
-                      <div class="card-body">
-                        <p class="card-text"><%= truncate(comment.description, length: 150) %></p>
-                        <p class="card-text text-muted">
-                          <small>
-                            <i class="fa-solid fa-user"></i> <%= comment.user.username %>
-                            on <strong><%= comment.place.title %></strong>
-                          </small>
-                        </p>
-                      </div>
-                    </div>
-                  <% end %>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
       <% else %>
         <p class="text-muted">No results found for "<%= @query %>"</p>
       <% end %>
