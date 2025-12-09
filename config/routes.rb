@@ -47,6 +47,9 @@ Rails.application.routes.draw do
   get 'my_travel_book', to: 'travel_books#show', as: :my_travel_book
   resources :places, only: [:new, :create, :update] do
     resources :travel_book_places, only: :create
+    collection do
+      post :suggestions, to: 'places/suggestions#create'
+    end
   end
   resources :travel_book_places, only: :destroy
   resources :comments, only: [:new, :create, :destroy]  # for new places + delete

@@ -32,7 +32,7 @@ class CommentsController < ApplicationController
             @auto_city = City.find_or_create_by(name: city_name) if city_name.present?
             @city = @auto_city if @auto_city
           end
-        rescue => e
+        rescue StandardError => e
           Rails.logger.error "Geocoding error: #{e.message}"
         end
       end
@@ -68,7 +68,7 @@ class CommentsController < ApplicationController
           session[:captured_blob_id] = nil
           session[:captured_latitude] = nil
           session[:captured_longitude] = nil
-        rescue => e
+        rescue StandardError => e
           Rails.logger.error "Failed to attach camera photo to comment: #{e.message}"
         end
       end

@@ -7,32 +7,6 @@ Place.destroy_all
 City.destroy_all
 User.destroy_all
 
-# Helper to find and attach image by place title
-def attach_photo(comment, place_title)
-  images_path = Rails.root.join("db/seeds/images")
-  extensions = %w[.jpg .jpeg .png .webp .avif]
-
-  extensions.each do |ext|
-    file_path = images_path.join("#{place_title}#{ext}")
-    if File.exist?(file_path)
-      content_type = case ext
-                     when ".jpg", ".jpeg" then "image/jpeg"
-                     when ".png" then "image/png"
-                     when ".webp" then "image/webp"
-                     when ".avif" then "image/avif"
-                     end
-      comment.photos.attach(
-        io: File.open(file_path),
-        filename: "#{place_title}#{ext}",
-        content_type: content_type
-      )
-      puts "  Attached #{place_title}#{ext}"
-      return
-    end
-  end
-  puts "  Warning: No image found for #{place_title}"
-end
-
 puts "Creating cities..."
 City.create!(name: "Barcelona", img: "https://niesamowita.b-cdn.net/images/Europa/Barcelona/Barcelona.jpg")
 puts "Created Barcelona"
