@@ -26,8 +26,6 @@ City.create!(name: "London", img: "https://www.visitlondon.com/-/media/images/lo
 puts "Created London"
 City.create!(name: "Lima", img: "https://cdn.divessi.com/cached/Peru_Lima_iStock-Christian-Vinces.jpg/1200.jpg")
 puts "Created Lima"
-City.create!(name: "Phnom Penh", img: "https://blog.bangkokair.com/wp-content/uploads/2025/01/Cover_phnom-penh-travel-guide.jpg")
-puts "Created Phnom Penh"
 City.create!(name: "Budapest", img: "https://www.budapest.org/es/wp-content/uploads/sites/99/budapest-danubio-panorama-hd.jpg")
 puts "Created Budapest"
 City.create!(name: "Cairo", img: "https://www.civitatis.com/blog/wp-content/uploads/2025/01/que-ver-cairo-egipto.jpg")
@@ -44,19 +42,17 @@ City.create!(name: "Prague", img: "https://media.tacdn.com/media/attractions-spl
 puts "Created Prague"
 City.create!(name: "Bangkok", img: "https://images.contentstack.io/v3/assets/blt06f605a34f1194ff/blt946ff9e4985c1319/6731c3a64ef1040e96e55bfc/BCC-2024-EXPLORER-BANGKOK-FUN-THINGS-TO-DO-HEADER_MOBILE.jpg?fit=crop&disable=upscale&auto=webp&quality=60&crop=smart")
 puts "Created Bangkok"
-City.create!(name: "Moscow", img: "https://lp-cms-production.imgix.net/2023-03/500pxRF_61786861.jpg?auto=format,compress&q=72&w=1095&fit=crop&crop=faces,edges")
-puts "Created Moscow"
 
 puts "Finished! Created #{City.count} cities."
 
 puts "Creating users..."
-user1 = User.create!(email: "traveler1@example.com", password: "password123", username: "eyoab", city: "Barcelona")
-user2 = User.create!(email: "traveler2@example.com", password: "password123", username: "egor", city: "Moscow")
+user1 = User.create!(email: "traveler1@example.com", password: "password123", username: "Eyoab", city: "Barcelona")
+user2 = User.create!(email: "traveler2@example.com", password: "password123", username: "Egor", city: "Moscow")
 user3 = User.create!(email: "admin@admin.com", password: "123456", username: "owen", city: "Amsterdam", admin: true)
-user4 = User.create!(email: "traveler3@example.com", password: "password123", username: "jordan", city: "Lima")
-user5 = User.create!(email: "traveler4@example.com", password: "password123", username: "lily", city: "Paris")
-user6 = User.create!(email: "traveler5@example.com", password: "password123", username: "kuka", city: "Cairo")
-user7 = User.create!(email: "traveler6@example.com", password: "password123", username: "mark", city: "Prague")
+user4 = User.create!(email: "traveler3@example.com", password: "password123", username: "Jordan", city: "Lima")
+user5 = User.create!(email: "traveler4@example.com", password: "password123", username: "Lily", city: "Paris")
+user6 = User.create!(email: "traveler5@example.com", password: "password123", username: "Kuka", city: "Cairo")
+user7 = User.create!(email: "traveler6@example.com", password: "password123", username: "Mark", city: "Prague")
 puts "Created #{User.count} users."
 
 puts "Creating places..."
@@ -68,7 +64,6 @@ sydney = City.find_by(name: "Sydney")
 amsterdam = City.find_by(name: "Amsterdam")
 london = City.find_by(name: "London")
 lima = City.find_by(name: "Lima")
-phnom_penh = City.find_by(name: "Phnom Penh")
 budapest = City.find_by(name: "Budapest")
 cairo = City.find_by(name: "Cairo")
 afar = City.find_by(name: "Afar")
@@ -78,7 +73,6 @@ mexico_city = City.find_by(name: "Mexico City")
 reykjavik = City.find_by(name: "Reykjavik")
 prague = City.find_by(name: "Prague")
 bangkok = City.find_by(name: "Bangkok")
-moscow = City.find_by(name: "Moscow")
 
 sagrada_familia = Place.create!(
   title: "Sagrada Familia",
@@ -146,14 +140,14 @@ carrer_de_lallada = Place.create!(
 senso_ji = Place.create!(
   title: "Sensō-ji Temple",
   enhanced_description: "Sensō-ji is an ancient Buddhist temple located in Asakusa, Tokyo. It is Tokyo's oldest temple and one of its most significant.",
-  address: "2 Chome-3-1 Asakusa, Taito City, Tokyo, Japan",
+  address: "Chome-3-1 Asakusa, Taito City, Tokyo 111-0032, Japan",
   city: tokyo
 )
 
 eiffel_tower = Place.create!(
   title: "Eiffel Tower",
   enhanced_description: "The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, named after engineer Gustave Eiffel.",
-  address: "Champ de Mars, 5 Avenue Anatole France, Paris, France",
+  address: "Av. Gustave Eiffel, 75007 Paris, France",
   city: paris
 )
 
@@ -169,13 +163,6 @@ canal_saint_martin = Place.create!(
   enhanced_description: "Canal Saint-Martin is a peaceful, tree-lined waterway surrounded by indie boutiques, cafés, and iron footbridges. Popular with locals for picnics, slow walks, and neighborhood vibes away from central tourist zones.",
   address: "Canal Saint-Martin, 75010 Paris, France",
   city: paris
-)
-
-central_park = Place.create!(
-  title: "Central Park",
-  enhanced_description: "Central Park is an urban park in New York City between the Upper West Side and Upper East Side of Manhattan.",
-  address: "Central Park, New York, NY, USA",
-  city: new_york
 )
 
 greenacre_park = Place.create!(
@@ -241,25 +228,11 @@ plaza_mayor = Place.create!(
   city: lima
 )
 
-barranco_puentes_de_sighs_side_streets = Place.create!(
-  title: "Barranco’s Puente de los Suspiros Side Streets",
-  enhanced_description: "Just steps away from the famous bridge, these narrow, colorful backstreets hide local art studios, tiny cafés, and murals—perfect for wandering without the crowds. One of Lima’s most atmospheric corners.",
-  address: "Jr. Batallón, Barranco, Lima, Peru",
-  city: lima
-)
-
 parque_el_olivar = Place.create!(
   title: "Parque El Olivar",
   enhanced_description: "A serene park in San Isidro filled with centuries-old olive trees, quiet walking paths, and resident ducks. Locals come here to escape the city noise, making it one of Lima’s most peaceful hidden sanctuaries.",
   address: "Calle Choquehuanca, San Isidro, Lima, Peru",
   city: lima
-)
-
-royal_palace = Place.create!(
-  title: "Royal Palace of Phnom Penh",
-  enhanced_description: "The Royal Palace is a complex of buildings which serves as the royal residence of the King of Cambodia.",
-  address: "Samdach Sothearos Blvd, Phnom Penh, Cambodia",
-  city: phnom_penh
 )
 
 fishermans_bastion = Place.create!(
@@ -316,13 +289,6 @@ dallol_colored_terraces = Place.create!(
   enhanced_description: "The Dallol Terraces are a surreal landscape of neon yellows, greens, and reds created by bubbling sulfur springs. Remote, otherworldly, and unlike anywhere else on Earth, this geothermal gem is one of Afar’s most breathtaking secrets.",
   address: "Dallol, Danakil Depression, Afar Region, Ethiopia",
   city: afar
-)
-
-lion_head_trail = Place.create!(
-  title: "Lion's Head Trail",
-  enhanced_description: "Lion's Head offers a relatively short but spectacular hike with 360-degree views over Cape Town, Table Mountain, and the Atlantic coast. Locals love it for sunrise and sunset missions.",
-  address: "Signal Hill Rd, Cape Town, 8001, South Africa",
-  city: cape_town
 )
 
 kloof_corner = Place.create!(
@@ -393,20 +359,6 @@ talat_rot_fai = Place.create!(
   enhanced_description: "A vibrant retro-themed night market filled with vintage shops, antiques, local street food, and quirky bars. It draws mostly locals and offers an authentic taste of Bangkok nightlife away from tourist spots.",
   address: "Srinagarindra Rd, Nong Bon, Prawet, Bangkok, Thailand",
   city: bangkok
-)
-
-patriarch_ponds = Place.create!(
-  title: "Patriarch Ponds",
-  enhanced_description: "A peaceful neighborhood pond surrounded by cafés, tree-lined paths, and elegant residential streets. Loved by locals for quiet evening walks and one of the most charming corners of Moscow.",
-  address: "Malaya Bronnaya Street area, Presnya, Moscow, Russia",
-  city: moscow
-)
-
-vinzavod_art_center = Place.create!(
-  title: "Winzavod Art Center",
-  enhanced_description: "A former wine factory turned into a creative hub showcasing contemporary art galleries, studios, cafés, and street art. A vibrant space where Moscow’s modern art scene comes alive.",
-  address: "4th Syromyatnicheskiy Ln 1, Moscow, Russia",
-  city: moscow
 )
 
 puts "Created #{Place.count} places."
@@ -525,13 +477,6 @@ comment = Comment.create!(
 attach_photo(comment, "Canal Saint-Martin")
 
 comment = Comment.create!(
-  description: "A perfect escape from the busy Manhattan streets. We rented bikes and explored the entire park. The Bethesda Fountain and Bow Bridge are particularly beautiful spots for photos.",
-  place: central_park,
-  user: user4
-)
-attach_photo(comment, "Central Park")
-
-comment = Comment.create!(
   description: "A perfect little oasis in Midtown! The waterfall makes it feel worlds away from the busy streets. Loved stopping here for a quiet break.",
   place: greenacre_park,
   user: user5
@@ -598,26 +543,11 @@ comment = Comment.create!(
 attach_photo(comment, "Plaza Mayor de Lima")
 
 comment = Comment.create!(
-  description: "Such a charming area to wander! The colorful murals and quiet little streets make it feel like a secret corner of Barranco. Perfect for photos and slow exploring.",
-  place: barranco_puentes_de_sighs_side_streets,
-  user: user1
-)
-attach_photo(comment, "Barranco Puente de los Suspiros Side Streets")
-
-
-comment = Comment.create!(
   description: "A beautiful and peaceful park! The old olive trees give it so much character, and it’s a great place to relax away from the busy parts of Lima.",
   place: parque_el_olivar,
   user: user2
 )
 attach_photo(comment, "Parque El Olivar")
-
-comment = Comment.create!(
-  description: "The Royal Palace is stunning with its Khmer architecture and beautiful gardens. The Silver Pagoda inside has an incredible floor made of silver tiles. Dress modestly to enter.",
-  place: royal_palace,
-  user: user4
-)
-attach_photo(comment, "Royal Palace of Phnom Penh")
 
 comment = Comment.create!(
   description: "The views of Budapest from here are absolutely spectacular, especially at sunset. The neo-Gothic towers and terraces are perfect for photos. Don't miss the view of the Parliament building.",
@@ -662,14 +592,6 @@ comment = Comment.create!(
   user: user2
 )
 attach_photo(comment, "El Fishawi Side Corners")
-
-comment = Comment.create!(
-  description: "One of the best hikes in Cape Town! The views along the trail are incredible, and the summit is worth every step. Sunrise here is truly unforgettable.",
-  place: lion_head_trail,
-  user: user2
-)
-attach_photo(comment, "Lion's Head Trail")
-
 
 comment = Comment.create!(
   description: "Such a stunning spot! The short climb rewards you with amazing views over the city and ocean. A perfect place for sunset and a favorite with locals.",
@@ -744,20 +666,6 @@ comment = Comment.create!(
   user: user1
 )
 attach_photo(comment, "Talat Rot Fai")
-
-comment = Comment.create!(
-  description: "Such a lovely and peaceful area! The pond, the quiet streets, and the cozy cafés make Patriarch Ponds one of my favorite places to relax in Moscow.",
-  place: patriarch_ponds,
-  user: user2
-)
-attach_photo(comment, "Patriarch Ponds")
-
-comment = Comment.create!(
-  description: "A fantastic spot for contemporary art lovers. The old industrial setting gives it so much character, and the galleries are always interesting. Loved exploring this area!",
-  place: vinzavod_art_center,
-  user: user2
-)
-attach_photo(comment, "Winzavod Art Center")
 
 puts "Created #{Comment.count} comments."
 puts "Seeding complete!"

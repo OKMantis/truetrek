@@ -75,6 +75,35 @@
   }
 }
 
+/* Logout Button */
+.profile-logout {
+  margin-top: 20px;
+}
+
+.profile-logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #fef2f2;
+    border-color: #dc2626;
+  }
+
+  i {
+    font-size: 0.9rem;
+  }
+}
+
 /* Stats Section */
 .profile-stats {
   display: flex;
@@ -84,7 +113,7 @@
   background: #849DBB;
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  margin: 0 16px 24px;
+  margin: 0 33px 24px;
 }
 
 .stat-item {
@@ -165,11 +194,11 @@
 
 /* Profile Sections */
 .profile-section {
-  background: #849DBB;
+ // background: #849DBB;
   border-radius: 16px;
   padding: 20px;
   margin: 0 16px 20px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+ // box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .section-header {
@@ -258,6 +287,7 @@
   padding: 16px;
   background: #f9fafb;
   border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .review-header {

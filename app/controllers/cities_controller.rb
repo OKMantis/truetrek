@@ -8,6 +8,7 @@ class CitiesController < ApplicationController
       @places = Place.search(@query).includes(:city)
       @comments = Comment.search(@query).includes(:place, :user)
     else
+      @cities = @cities.limit(15)
       @places = Place.none
       @comments = Comment.none
     end

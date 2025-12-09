@@ -17,7 +17,13 @@
 
 body {
   background-color: white;
+  overflow-x: hidden;
 }
+
+html {
+  overflow-x: hidden;
+}
+
 .homepage {
   margin-top: -1rem; // Offset navbar spacing
 }
@@ -474,8 +480,8 @@ body {
 
 @media (max-width: 480px) {
   .hero-section {
-    height: 45vh;
-    min-height: 270px;
+    height: 40vh;
+    min-height: 260px;
   }
 
   body {
