@@ -72,6 +72,7 @@ class CommentsController < ApplicationController
         Rails.logger.error "Place save failed: #{@place.errors.full_messages.join(', ')}"
         flash.now[:alert] = @place.errors.full_messages.join(", ")
         @comment = Comment.new(comment_params)
+        authorize @comment
         render :new, status: :unprocessable_entity
         return
       end
