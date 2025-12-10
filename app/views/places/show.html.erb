@@ -3,8 +3,10 @@
   <section class="place-header">
     <div class="place-header-content">
       <nav class="place-breadcrumb">
+        <%= link_to "Home", root_path, class: "breadcrumb-link" %>
+        <span class="breadcrumb-separator">></span>
         <%= link_to @place.city.name, city_places_path(@place.city), class: "breadcrumb-link" %>
-        <i class="fa-solid fa-chevron-right"></i>
+        <span class="breadcrumb-separator">></span>
         <span><%= @place.title %></span>
       </nav>
       <div class="side-btn">
@@ -29,19 +31,10 @@
         <i class="fa-solid fa-location-dot"></i> <%= @place.city.name %>
       </p>
 
-      <% if user_signed_in? %>
+      <% if user_signed_in? && current_user.admin? %>
         <div class="place-header-actions">
-          <% if current_user.reports.exists?(place: @place) %>
-            <span class="reported-badge"><i class="fa-solid fa-check"></i> Reported</span>
-          <% else %>
-            <%= link_to new_place_report_path(@place), class: "report-btn" do %>
-              <i class="fa-solid fa-flag"></i> Report
-            <% end %>
-          <% end %>
-          <% if current_user.admin? %>
-            <%= button_to city_place_path(@place.city, @place), method: :delete, class: "admin-delete-btn", data: { turbo_confirm: "Are you sure you want to delete this place?" } do %>
-              <i class="fa-solid fa-trash"></i> Delete
-            <% end %>
+          <%= button_to city_place_path(@place.city, @place), method: :delete, class: "admin-delete-btn", data: { turbo_confirm: "Are you sure you want to delete this place?" } do %>
+            <i class="fa-solid fa-trash"></i> Delete
           <% end %>
         </div>
       <% end %>
@@ -109,8 +102,13 @@
 
     <!-- Description -->
     <section class="place-description-section">
+      <%= turbo_stream_from "place_#{@place.id}" %>
       <h2 class="section-heading">About this place</h2>
-      <p class="place-description"><%= format_description_with_avatars(@place.enhanced_description, @place) %></p>
+      <% if flash[:description_loading] || @place.enhanced_description.blank? %>
+        <%= render "places/description_loading", place: @place %>
+      <% else %>
+        <%= render "places/description", place: @place %>
+      <% end %>
       
       <div class="d-flex flex-column justify-content-between align-items-start gap-3 mt-3">
         <div>
