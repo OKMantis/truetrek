@@ -16,8 +16,8 @@ class Places::AutocompleteController < ApplicationController
     begin
       # If we have coordinates, prioritize nearby places
       if latitude.nonzero? && longitude.nonzero?
-        # First get nearby places (within 50km)
-        places = Place.near([latitude, longitude], 50, units: :km)
+        # Get nearby places within 1km of the location
+        places = Place.near([latitude, longitude], 1, units: :km)
                       .where("LOWER(title) LIKE ?", "%#{query.downcase}%")
                       .limit(5)
                       .pluck(:title, :address, :latitude, :longitude)

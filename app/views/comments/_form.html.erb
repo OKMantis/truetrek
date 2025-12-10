@@ -15,7 +15,7 @@
             <select class="styled-select" data-action="change->place-selector#handleChange">
               <option value="">Choose a place...</option>
               <% if @nearby_places.present? %>
-                <optgroup label="Nearby Places (within 10km)">
+                <optgroup label="Nearby Places (within 1km)">
                   <% @nearby_places.each do |p| %>
                     <option value="<%= new_comment_path(place_id: p.id, from_camera: true) %>">
                       <%= p.title %>

@@ -42,8 +42,8 @@ class CommentsController < ApplicationController
           Rails.logger.error "Geocoding error: #{e.message}"
         end
 
-        # Find places within 10km of the photo location
-        @nearby_places = Place.near([lat, lng], 10, units: :km).order(:title)
+        # Find places within 1km of the photo location
+        @nearby_places = Place.near([lat, lng], 1, units: :km).order(:title)
       end
     end
   end
