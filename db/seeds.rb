@@ -72,13 +72,14 @@ puts "Created Bangkok"
 puts "Finished! Created #{City.count} cities."
 
 puts "Creating users..."
-user1 = User.create!(email: "traveler1@example.com", password: "password123", username: "Eyoab", city: "Barcelona", admin: true)
-user2 = User.create!(email: "traveler2@example.com", password: "password123", username: "Egor", city: "Moscow")
-user3 = User.create!(email: "admin@admin.com", password: "123456", username: "owen", city: "Amsterdam", admin: true)
-user4 = User.create!(email: "traveler3@example.com", password: "password123", username: "Jordan", city: "Lima")
-user5 = User.create!(email: "traveler4@example.com", password: "password123", username: "Lily", city: "Paris")
-user6 = User.create!(email: "traveler5@example.com", password: "password123", username: "Kuka", city: "Cairo")
-user7 = User.create!(email: "traveler6@example.com", password: "password123", username: "Mark", city: "Prague")
+user1 = User.create!(email: "eyoab@example.com", password: "123456", username: "Eyoab", city: "Barcelona", admin: true)
+user2 = User.create!(email: "egor@example.com", password: "123456", username: "Egor", city: "Moscow")
+user4 = User.create!(email: "traveler4@example.com", password: "123456", username: "Jeroen", city: "Amsterdam")
+user5 = User.create!(email: "traveler5@example.com", password: "123456", username: "Lily", city: "Paris")
+user6 = User.create!(email: "kuka@example.com", password: "123456", username: "Kuka", city: "Cairo")
+user7 = User.create!(email: "traveler7@example.com", password: "123456", username: "Mark", city: "Prague")
+user8 = User.create!(email: "owen@example.com", password: "123456", username: "Owen", city: "Barcelona")
+user9 = User.create!(email: "neve@example.com", password: "123456", username: "Neve", city: "Amsterdam")
 puts "Created #{User.count} users."
 
 puts "Creating places..."
