@@ -4,8 +4,6 @@ A travel planning app where users browse cities and places, build personal trave
 
 Built as a 2-week team project at Le Wagon's AI Software Development Bootcamp (2025), working collaboratively across product, design, and engineering.
 
-**[Live demo](https://your-demo-url-here)** (add if applicable)
-
 ---
 
 ## Features
