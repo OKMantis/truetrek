@@ -1,6 +1,12 @@
 # TrueTrek
 
-A Rails 7.2 travel planning application where users can browse cities and places, create travel books (collections of places), and leave comments with photos. The app uses LLM-powered features to enhance place descriptions based on community feedback.
+A travel planning app where users browse cities and places, build personal travel books, and leave comments with photos. Community feedback is used to keep place descriptions fresh through AI-powered enhancement.
+
+Built as a 2-week team project at Le Wagon's AI Software Development Bootcamp (2025), working collaboratively across product, design, and engineering.
+
+**[Live demo](https://your-demo-url-here)** (add if applicable)
+
+---
 
 ## Features
 
@@ -16,6 +22,8 @@ A Rails 7.2 travel planning application where users can browse cities and places
 - Admin dashboard with report and place moderation
 - Background job processing with Mission Control dashboard
 
+---
+
 ## Tech Stack
 
 - **Framework**: Rails 7.2 with Hotwire (Turbo + Stimulus)
@@ -25,77 +33,21 @@ A Rails 7.2 travel planning application where users can browse cities and places
 - **Frontend**: Bootstrap 5 + Font Awesome
 - **Image Hosting**: Cloudinary (Active Storage)
 - **Geocoding**: Geocoder with Nominatim
-- **AI**: RubyLLM for description enhancement
+- **AI**: RubyLLM with OpenAI for description enhancement
 - **Background Jobs**: Solid Queue + Mission Control dashboard
 
-## Setup
+---
 
-### Prerequisites
+## LLM Integration
 
-- Ruby (see `.ruby-version`)
-- PostgreSQL
-- A `.env` file with the required credentials (see below)
+Place descriptions are enhanced automatically using community input:
 
-### Installation
+- `GeneratePlaceDescriptionJob` — creates an initial AI-generated description when a new place is added
+- `UpdateEnhancedDescriptionJob` — regenerates descriptions using positively-voted comments, prioritising local resident insights
+- `WikipediaTool` — fetches place summaries from the Wikipedia API as additional context
+- Description updates are broadcast live via Turbo Streams to the relevant place channel
 
-```bash
-# Clone the repo
-git clone <repo-url>
-cd truetrek
-
-# Install dependencies
-bundle install
-
-# Setup database
-bin/rails db:create db:migrate db:seed
-
-# Start the server
-bin/rails server
-```
-
-### Environment Variables
-
-Create a `.env` file in the root directory with:
-
-```
-# Cloudinary
-CLOUDINARY_URL=
-
-# LLM (RubyLLM)
-OPENAI_API_KEY=
-```
-
-## Common Commands
-
-```bash
-# Start development server
-bin/rails server
-
-# Run database migrations
-bin/rails db:migrate
-
-# Seed the database
-bin/rails db:seed
-
-# Reset the database
-bin/rails db:reset
-
-# Run tests
-bin/rails test
-bin/rails test test/models/user_test.rb  # single test file
-
-# Linting
-bin/rubocop
-
-# Security scan
-bin/brakeman
-
-# Rails console
-bin/rails console
-
-# Background job processing
-bin/rails solid_queue:start
-```
+---
 
 ## Data Model
 
@@ -137,6 +89,51 @@ Report
 └── enum status: pending, reviewed, resolved, dismissed
 ```
 
+---
+
+## Setup
+
+### Prerequisites
+
+- Ruby (see `.ruby-version`)
+- PostgreSQL
+- A `.env` file with the required credentials (see below)
+
+### Installation
+
+```bash
+git clone <repo-url>
+cd truetrek
+bundle install
+bin/rails db:create db:migrate db:seed
+bin/rails server
+```
+
+### Environment Variables
+
+Create a `.env` file in the root:
+
+```
+CLOUDINARY_URL=
+OPENAI_API_KEY=
+```
+
+---
+
+## Common Commands
+
+```bash
+bin/rails server          # Start development server
+bin/rails db:migrate      # Run migrations
+bin/rails db:seed         # Seed the database
+bin/rails test            # Run tests
+bin/rubocop               # Linting
+bin/brakeman              # Security scan
+bin/rails solid_queue:start  # Background job processing
+```
+
+---
+
 ## Routes
 
 | Path | Description |
@@ -152,17 +149,3 @@ Report
 | `/users/search` | User autocomplete for @mentions |
 | `/jobs` | Mission Control (admin only) |
 | `/admin` | Admin dashboard |
-
-## LLM Integration
-
-- `GeneratePlaceDescriptionJob` — creates an initial AI-generated description when a new place is added
-- `UpdateEnhancedDescriptionJob` — regenerates descriptions using positively-voted comments, prioritizing local resident insights
-- `WikipediaTool` — fetches place summaries from the Wikipedia API
-- Description updates are broadcast via Turbo Streams to the relevant place channel
-
-## Admin
-
-Admins have access to:
-- `/admin` — dashboard
-- `/admin/reports` — manage user-submitted reports
-- `/jobs` — Mission Control background job dashboard
