@@ -80,6 +80,13 @@ user5 = User.create!(email: "kuka@example.com", password: "123456", username: "K
 user6 = User.create!(email: "traveler7@example.com", password: "123456", username: "Mark", city: "Prague")
 user7 = User.create!(email: "owen@example.com", password: "123456", username: "Owen", city: "Barcelona")
 user8 = User.create!(email: "neve@example.com", password: "123456", username: "Neve", city: "Amsterdam")
+User.create!(
+  email: User::GUEST_EMAIL,
+  password: "guest_demo_account_truetrek!",
+  username: "Guest",
+  city: "Barcelona"
+)
+puts "Created Guest user"
 puts "Created #{User.count} users."
 
 puts "Creating places..."
