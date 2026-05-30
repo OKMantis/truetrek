@@ -41,7 +41,7 @@ bin/rails solid_queue:start
 - Bootstrap 5 + Font Awesome
 - Cloudinary for image hosting (Active Storage)
 - Geocoder with Nominatim for coordinates
-- RubyLLM for AI-powered description enhancement
+- RubyLLM (OpenAI) for AI-powered description enhancement
 - Solid Queue for background jobs + Mission Control dashboard
 
 ### Data Model
@@ -97,21 +97,22 @@ Report
 - `RubyLLM` gem with custom tools in `app/tools/`
 - `WikipediaTool` fetches place summaries from Wikipedia API
 - `GeneratePlaceDescriptionJob` creates initial place descriptions when a new place is added
-- `UpdateEnhancedDescriptionJob` regenerates place descriptions using positively-voted comments, prioritizing local resident insights
-- Descriptions broadcast updates via Turbo Streams to `place_#{id}` channel
+- `UpdateEnhancedDescriptionJob` regenerates place descriptions using positively-voted comments, prioritizing local resident insights; a comment's `ordering_key(local_bonus: 2)` ranks it — locals get +2 weight
+- Descriptions broadcast updates via Turbo Streams to `place_#{id}` channel targeting `place_description` DOM id
 
 ### Authorization with Pundit
 - All controllers include `Pundit::Authorization` via `ApplicationController`
 - `verify_authorized` runs after all actions except index (unless skipped)
 - `verify_policy_scoped` runs after index actions
-- Pundit is skipped for Devise controllers, pages controller, and mission_control
+- `Pundit::NotAuthorizedError` rescue is intentionally commented out in `ApplicationController` (not yet wired up)
+- `skip_pundit?` exempts: Devise controllers, pages, mission_control, and `places/autocomplete`
 - Admin controllers (`Admin::BaseController`) use `require_admin` before_action and skip Pundit
 - Policy files in `app/policies/`
 
 ### Routes Structure
 - Root: `cities#index`
-- Nested: `cities/:city_id/places` for places within a city
-- Nested: `cities/:city_id/places/:place_id/comments` for comments
+- Nested: `cities/:city_id/places` for places within a city (index, show only)
+- Nested: `cities/:city_id/places/:place_id/comments` for creating comments on existing places
 - Nested: `comments/:comment_id/replies` for threaded replies
 - Nested: `comments/:comment_id/vote` for upvote/downvote
 - Nested: `places/:place_id/reports` for user-submitted place reports
@@ -120,15 +121,23 @@ Report
 - `/users/search` for user autocomplete (@mentions)
 - `/jobs` Mission Control dashboard (admin only)
 - `/admin` namespace for admin dashboard, reports management, and place moderation
+- Place creation (`places#new`, `places#create`) is **not** nested under a city — city is determined by geocoding from camera GPS or user selection
+
+### Camera → Place Creation Flow
+1. `GET /camera` (`captures#new`) shows the camera UI
+2. `POST /camera` (`captures#create`) stores the blob id and GPS coordinates in session: `session[:captured_blob_id]`, `session[:captured_latitude]`, `session[:captured_longitude]`
+3. `places#new` reads these from session, reverse-geocodes the coordinates to pre-fill city and address, and passes `@camera_blob_id` to the form
+4. `places#create` attaches the blob to the new place after saving
 
 ### Stimulus Controllers
 Key JavaScript controllers in `app/javascript/controllers/`:
 - `reply_toggle_controller.js` - Shows reply form
+- `reply_form_controller.js` - Handles cancel button on reply form
 - `replies_expand_controller.js` - Expands/collapses reply threads
 - `mention_autocomplete_controller.js` - @mention dropdown in comments
 - `map_controller.js` - Map integration
 - `place_selector_controller.js` - Place selection UI
-- `place_name_autocomplete_controller.js` - Place name suggestions
+- `place_name_autocomplete_controller.js` - Place name suggestions (hits `places/autocomplete#index`)
 - `address_autocomplete_controller.js` - Address autocomplete
 
 ### Devise Configuration
@@ -139,5 +148,7 @@ Custom permitted parameters in `ApplicationController`:
 ## Environment Variables
 
 Uses `dotenv-rails`. Requires `.env` file with:
-- Cloudinary credentials
-- LLM API credentials (for RubyLLM)
+```
+CLOUDINARY_URL=
+OPENAI_API_KEY=
+```
