@@ -67,4 +67,7 @@ Rails.application.configure do
 
   # Allow the default integration test host.
   config.hosts << "www.example.com"
+
+  # Disable Rack::Attack throttling so test requests are never blocked.
+  Rack::Attack.enabled = false
 end
