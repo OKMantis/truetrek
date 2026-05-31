@@ -8,6 +8,7 @@ class GuestSessionsController < ApplicationController
 
     guest = User.find_by(email: User::GUEST_EMAIL)
     if guest
+      reset_session
       sign_in(:user, guest)
       redirect_to root_path
     else
