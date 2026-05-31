@@ -60,8 +60,14 @@
         </div>
       <% end %>
 
+      <div class="auth-divider"><span>or</span></div>
+
       <div class="auth-guest">
-        <%= button_to "Continue as Guest", guest_session_path, method: :post, class: "auth-guest-btn" %>
+        <%= button_to "Continue as Guest", guest_session_path,
+              method: :post,
+              class: "auth-guest-btn",
+              aria: { label: "Continue as guest — no account required" } %>
+        <p class="auth-guest-hint">No account needed &middot; demo mode</p>
       </div>
 
       <div class="auth-footer-links">
