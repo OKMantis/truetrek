@@ -34,5 +34,6 @@ module Truetrek
     # Autoload app/tools directory
     config.autoload_paths << Rails.root.join("app/tools")
     config.mission_control.jobs.http_basic_auth_enabled = false
+    config.middleware.use Rack::Attack
   end
 end

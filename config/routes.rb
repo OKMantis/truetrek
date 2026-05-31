@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   end
 
   root to: "cities#index"
+  post '/guest_session', to: 'guest_sessions#create', as: :guest_session
 
   get "/pages/home", to: "pages#home"
   authenticate :user, ->(user) { user.admin? } do

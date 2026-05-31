@@ -43,6 +43,7 @@ bin/rails solid_queue:start
 - Geocoder with Nominatim for coordinates
 - RubyLLM (OpenAI) for AI-powered description enhancement
 - Solid Queue for background jobs + Mission Control dashboard
+- Rack::Attack for request throttling (configured in `config/initializers/rack_attack.rb`; disabled in test env via `Rack::Attack.enabled = false`)
 
 ### Data Model
 
@@ -107,6 +108,7 @@ Report
 - `Pundit::NotAuthorizedError` rescue is intentionally commented out in `ApplicationController` (not yet wired up)
 - `skip_pundit?` exempts: Devise controllers, pages, mission_control, and `places/autocomplete`
 - Admin controllers (`Admin::BaseController`) use `require_admin` before_action and skip Pundit
+- `GuestSessionsController` skips all three auth-related callbacks — `authenticate_user!`, `verify_authorized`, and `verify_policy_scoped` — because guest login must work for unauthenticated users and there is no authorizable resource; this is the only non-Devise controller with all three skipped
 - Policy files in `app/policies/`
 
 ### Routes Structure
@@ -121,6 +123,7 @@ Report
 - `/users/search` for user autocomplete (@mentions)
 - `/jobs` Mission Control dashboard (admin only)
 - `/admin` namespace for admin dashboard, reports management, and place moderation
+- `POST /guest_session` → `GuestSessionsController#create` for one-click guest login (throttled: 10 requests/IP/60s)
 - Place creation (`places#new`, `places#create`) is **not** nested under a city — city is determined by geocoding from camera GPS or user selection
 
 ### Camera → Place Creation Flow

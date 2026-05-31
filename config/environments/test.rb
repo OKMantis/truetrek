@@ -64,4 +64,10 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Allow the default integration test host.
+  config.hosts << "www.example.com"
+
+  # Disable Rack::Attack throttling so test requests are never blocked.
+  Rack::Attack.enabled = false
 end
